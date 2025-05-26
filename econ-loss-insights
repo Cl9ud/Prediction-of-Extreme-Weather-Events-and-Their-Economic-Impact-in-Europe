@@ -1,0 +1,53 @@
+# 03 - Visual Analysis
+
+import pandas as pd
+import matplotlib.pyplot as plt
+import seaborn as sns
+
+# ----------------------
+# COUNTRY CONFIGURATION
+# ----------------------
+country = "Spain"
+input_path = f"data/processed/merged_data_{country.lower()}.csv"
+
+
+# ----------------------
+# LOAD DATA
+# ----------------------
+df = pd.read_csv(input_path)
+df.head()
+
+
+———
+
+# ----------------------
+# PLOT 1: Economic Loss by Year
+# ----------------------
+plt.figure(figsize=(10, 5))
+sns.barplot(data=df, x="Year", y="Economic_Loss_USD", color='coral')
+plt.title(f"Economic Loss by Year in {country}")
+plt.ylabel("Economic Loss (USD)")
+plt.xticks(rotation=45)
+plt.grid(True)
+plt.tight_layout()
+plt.show()
+
+
+
+———
+
+
+# ----------------------
+# PLOT 2: Temperature vs Economic Loss
+# ----------------------
+plt.figure(figsize=(8, 5))
+sns.scatterplot(data=df, x="Avg_Temperature_C", y="Economic_Loss_USD", hue="Year", palette="viridis")
+plt.title(f"Avg Temperature vs Economic Loss in {country}")
+plt.xlabel("Average Temperature (°C)")
+plt.ylabel("Economic Loss (USD)")
+plt.grid(True)
+plt.tight_layout()
+plt.show()
+
+
+———
