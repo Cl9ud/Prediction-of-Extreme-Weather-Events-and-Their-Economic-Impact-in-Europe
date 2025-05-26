@@ -1,0 +1,15 @@
+# 1. Select Country
+country = "Germany"
+
+# 2. Load Natural Disaster Data (EM-DAT)
+df_disasters = pd.read_csv("emdat_dataset.csv")
+df_country = df_disasters[df_disasters['Country'] == country]
+
+# 3. Load Climate Data (Preprocessed by Region or Country)
+df_climate = pd.read_csv(f"climate_data_{country.lower()}.csv")
+
+# 4. Merge Datasets by Year/Event
+df_merged = pd.merge(df_country, df_climate, on="Year", how="inner")
+
+# 5. Analyze Economic Impact
+df_merged["Economic_Loss_USD"].plot(kind="bar", x="Year", y="Economic_Loss_USD")
