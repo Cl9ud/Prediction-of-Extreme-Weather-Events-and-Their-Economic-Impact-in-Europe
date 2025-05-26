@@ -3,16 +3,19 @@
 import pandas as pd
 import matplotlib.pyplot as plt
 
+
 # -----------------------------
-# Configuración inicial
+# Initial Configuration
 # -----------------------------
 country = "Spain"
 
+
 # -----------------------------
-# Cargar datos de desastres (EM-DAT)
+# Load Disaster Data (EM-DAT)
 # -----------------------------
-# Simulación de dataset EM-DAT simplificado para Europa
-# Columnas: Country, Year, Disaster_Type, Total_Damages_USD
+# Simulated EM-DAT dataset for Europe
+# Columns: Country, Year, Disaster_Type, Total_Damages_USD
+
 
 emdat_data = {
     "Country": ["Spain", "Spain", "Germany", "Spain", "France"],
@@ -23,13 +26,16 @@ emdat_data = {
 
 emdat_df = pd.DataFrame(emdat_data)
 
-# Filtrar por país
+
+# Filter by Country
 emdat_country = emdat_df[emdat_df["Country"] == country]
 
+
+
 # -----------------------------
-# Cargar datos climáticos simulados (Copernicus / Terramind)
+# Load Simulated Climate Data (Copernicus / Terramind)
 # -----------------------------
-# Columnas: Country, Year, Avg_Temperature_C, Max_Precipitation_mm
+# Columns: Country, Year, Avg_Temperature_C, Max_Precipitation_mm
 
 climate_data = {
     "Country": ["Spain", "Spain", "Spain", "Germany", "France"],
@@ -42,13 +48,15 @@ climate_df = pd.DataFrame(climate_data)
 
 climate_country = climate_df[climate_df["Country"] == country]
 
+
 # -----------------------------
-# Unir datasets
+# Merge Datasets
 # -----------------------------
 merged = pd.merge(emdat_country, climate_country, on=["Country", "Year"], how="inner")
 
+
 # -----------------------------
-# Visualización simple del impacto económico
+# Simple Visualization of Economic Impact
 # -----------------------------
 plt.figure(figsize=(10,6))
 plt.bar(merged['Year'], merged['Total_Damages_USD'], color='tomato')
@@ -59,8 +67,9 @@ plt.grid(axis='y')
 plt.tight_layout()
 plt.show()
 
+
 # -----------------------------
-# Guardar datos procesados
+# Save Processed Data
 # -----------------------------
 merged.to_csv(f"data/processed/{country.lower()}_merged_data.csv", index=False)
 print(f"Datos procesados guardados para {country}")
