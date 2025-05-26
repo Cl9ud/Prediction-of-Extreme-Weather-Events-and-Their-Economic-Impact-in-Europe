@@ -1,0 +1,67 @@
+# 01_download_and_filter_data.py
+
+import pandas as pd
+import matplotlib.pyplot as plt
+
+# -----------------------------
+# Configuración inicial
+# -----------------------------
+country = "Spain"
+
+# -----------------------------
+# Cargar datos de desastres (EM-DAT)
+# -----------------------------
+# Simulación de dataset EM-DAT simplificado para Europa
+# Columnas: Country, Year, Disaster_Type, Total_Damages_USD
+
+emdat_data = {
+    "Country": ["Spain", "Spain", "Germany", "Spain", "France"],
+    "Year": [2017, 2018, 2018, 2020, 2020],
+    "Disaster_Type": ["Flood", "Heatwave", "Storm", "Flood", "Heatwave"],
+    "Total_Damages_USD": [500_000_000, 300_000_000, 700_000_000, 800_000_000, 250_000_000]
+}
+
+emdat_df = pd.DataFrame(emdat_data)
+
+# Filtrar por país
+emdat_country = emdat_df[emdat_df["Country"] == country]
+
+# -----------------------------
+# Cargar datos climáticos simulados (Copernicus / Terramind)
+# -----------------------------
+# Columnas: Country, Year, Avg_Temperature_C, Max_Precipitation_mm
+
+climate_data = {
+    "Country": ["Spain", "Spain", "Spain", "Germany", "France"],
+    "Year": [2017, 2018, 2020, 2018, 2020],
+    "Avg_Temperature_C": [16.2, 17.5, 18.3, 9.5, 11.2],
+    "Max_Precipitation_mm": [120, 85, 150, 160, 95]
+}
+
+climate_df = pd.DataFrame(climate_data)
+
+climate_country = climate_df[climate_df["Country"] == country]
+
+# -----------------------------
+# Unir datasets
+# -----------------------------
+merged = pd.merge(emdat_country, climate_country, on=["Country", "Year"], how="inner")
+
+# -----------------------------
+# Visualización simple del impacto económico
+# -----------------------------
+plt.figure(figsize=(10,6))
+plt.bar(merged['Year'], merged['Total_Damages_USD'], color='tomato')
+plt.xlabel("Year")
+plt.ylabel("Economic Loss (USD)")
+plt.title(f"Economic Loss from Disasters in {country}")
+plt.grid(axis='y')
+plt.tight_layout()
+plt.show()
+
+# -----------------------------
+# Guardar datos procesados
+# -----------------------------
+merged.to_csv(f"data/processed/{country.lower()}_merged_data.csv", index=False)
+print(f"Datos procesados guardados para {country}")
+ 
