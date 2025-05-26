@@ -1,0 +1,77 @@
+# 02_model_training.py
+
+import pandas as pd
+from sklearn.linear_model import LinearRegression
+from sklearn.model_selection import train_test_split
+from sklearn.metrics import mean_squared_error, r2_score
+import joblib
+import matplotlib.pyplot as plt
+
+
+# ----------------------
+# COUNTRY CONFIGURATION
+# ----------------------
+country = "Spain"
+input_path = f"data/processed/merged_data_{country.lower()}.csv"
+
+
+# ----------------------
+# LOAD PROCESSED DATA
+# ----------------------
+df = pd.read_csv(input_path)
+
+
+# ----------------------
+# FEATURE SELECTION
+# ----------------------
+features = ["Avg_Temperature_C", "Max_Rainfall_mm"]
+target = "Economic_Loss_USD"
+
+X = df[features]
+y = df[target]
+
+
+# ----------------------
+# DATA SPLITTING
+# ----------------------
+X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
+
+
+# ----------------------
+# MODEL TRAINING
+# ----------------------
+model = LinearRegression()
+model.fit(X_train, y_train)
+
+
+# ----------------------
+# MODEL EVALUATION
+# ----------------------
+y_pred = model.predict(X_test)
+mse = mean_squared_error(y_test, y_pred)
+r2 = r2_score(y_test, y_pred)
+
+print(f"📊 Mean Squared Error: {mse:.2f}")
+print(f"📈 R² Score: {r2:.2f}")
+
+
+# ----------------------
+# RESULTS VISUALIZATION
+# ----------------------
+plt.figure(figsize=(8, 5))
+plt.scatter(y_test, y_pred, color='dodgerblue')
+plt.plot([y.min(), y.max()], [y.min(), y.max()], 'r--')
+plt.xlabel("Actual Economic Loss")
+plt.ylabel("Predicted Economic Loss")
+plt.title(f"Actual vs Predicted Economic Loss in {country}")
+plt.grid(True)
+plt.show()
+
+
+# ----------------------
+# SAVE MODEL
+# ----------------------
+model_path = f"models/linear_model_{country.lower()}.pkl"
+joblib.dump(model, model_path)
+print(f"✅ Modelo guardado en: {model_path}")
+
