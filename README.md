@@ -25,3 +25,19 @@ Climate change is increasing the frequency and severity of extreme weather event
 - **Git, GitHub** – Version control and collaboration
 
 ## 📂 Project Structure
+
+
+------------------------
+
+📊 Data Sources
+	•	Copernicus Climate Data Store
+	•	EM-DAT International Disaster Database
+	•	Eurostat and national statistical agencies for economic indicators
+
+🤝 Contributing
+
+Pull requests are welcome! Feel free to open issues or suggest features.
+
+📄 License
+
+This project is licensed under the MIT License.
